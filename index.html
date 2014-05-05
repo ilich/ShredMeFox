@@ -3,14 +3,39 @@
 	<head>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,700&subset=latin,cyrillic-ext,latin-ext,cyrillic,greek-ext,greek,vietnamese' rel='stylesheet' type='text/css'>
-		<link rel="stylesheet" href="styles/jquery.mobile-1.4.2.min.css">
+		<link rel="stylesheet" href="styles/jquery.mobile-1.4.2.min.css" />
 		<link rel="stylesheet" href="styles/app.css">
-		<script src="scripts/jquery-2.1.0.js" type="text/javascript"></script>
-		<script src="scripts/jquery.mobile-1.4.2.js" type="text/javascript"></script>
-		<script src="scripts/app.js" type="text/javascript"></script>
+		<script src="scripts/jquery-2.1.1.min.js"></script>
+		<script src="scripts/config.js"></script>
+		<script src="scripts/jquery.mobile-1.4.2.min.js"></script>
+		<script src="scripts/underscore-min.js"></script>
+		<script src="scripts/storage.js"></script>
+		<script src="scripts/app.js"></script>
 	</head>
 	<body>
-		<h1 id="title"></h1>
+		<div data-role="page" id="storage-selector-page">
+			<div data-role="header" data-position="fixed" data-theme="b">
+				<h1>My Device</h1>
+			</div>
+			<div role="main" class="ui-content">
+				<ul data-role="listview" data-inset="true" id="storage">
+					<li id="sdcard-storage"><a href="#sdcard">SD Card</a></li>
+					<li id="pictires-storage"><a href="#pictures">My Pictures</a></li>
+					<li id="music-storage"><a href="#music">My Music</a></li>
+					<li id="videos-storage"><a href="#videos">My Videos</a></li>
+				</ul>
+				
+				<h1 id="file-system-error">Device's file system is unavailable. Please check application's permissions and try again.</h1>
+			</div>
+		</div>
+		<div data-role="page" id="storage-page">
+			<div data-role="header" data-position="fixed" data-theme="b">
+				<h1 id="folder-name"></h1>
+			</div>
+			<div role="main" class="ui-content">
+				<ul data-role="listview" id="folders-list">
+				</ul>
+			</div>
+		</div>
 	</body>
 </html>

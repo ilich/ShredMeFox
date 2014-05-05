@@ -1,6 +1,7 @@
 {
 	"name": "ShredMeFox",
 	"description": "Firefox OS utility to securely destroy/wipe data on your device.",
+	"type": "privileged",
 	"launch_path": "/index.html",
 	"icons": {
 		"128": "/images/icon-128.png"
@@ -10,20 +11,16 @@
 		"url": "https://github.com/ilich/"
 	},
 	"permissions": {
+		"device-storage:sdcard": {
+			"access": "readwrite"
+		},
 		"device-storage:music": {
-			"description": "Need for securely destroy/wipe data on your device.",
 			"access": "readwrite"
 		},
 		"device-storage:pictures": {
-			"description": "Need for securely destroy/wipe data on your device.",
 			"access": "readwrite"
 		},
-		"device-storage:sdcard": {
-			"description": "Need for securely destroy/wipe data on your device.",
-			"access": "readonly"
-		},
 		"device-storage:videos": {
-			"description": "Need for securely destroy/wipe data on your device.",
 			"access": "readwrite"
 		}
 	}

@@ -1,3 +1,13 @@
-h1 {
+body {
 	font-family: 'Open Sans', sans-serif;
+}
+
+#storage {
+	display: none;
+}
+
+#file-system-error {
+	display: none;
+	font-size: 2em;
+	text-align: center;
 }
