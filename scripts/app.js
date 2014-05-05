@@ -1,63 +1,61 @@
 $(document).ready(function () {
-	var runningApp = {};
-	(function (app) {
-		var Storage = getStorage();
+	var Storage = getStorage();
+
+	function initStorage(onloaded) {
+		_.each(Storage.getDeviceStorages(), function (storage) {
+			var	handler = navigator.getDeviceStorage(storage.storageId),
+				request = handler.available();
+			
+			request.onsuccess = (function (s, h) {
+				var tempStorage = s,
+					tempHandler = h;
+				
+				return function () {
+					var isAvailable = isAvailable = this.result === 'available';
+					tempStorage.setDeviceHandler(tempHandler, isAvailable, onloaded);
+				};
+			})(storage, handler);
+			
+			request.onerror = (function (s, h) {
+				var tempStorage = s,
+					tempHandler = h;
+				
+				return function () {
+					tempStorage.setDeviceHandler(tempHandler, false, onloaded);
+				};
+			})(storage, handler);
+		});
+	}
 	
-		function initStorage(onloaded) {
-			var storages =_.filter(Storage, function (storage) {
-				return !_.isFunction(storage);
-			});
-			
-			_.each(storages, function (storage) {
-				var	handler = navigator.getDeviceStorage(storage.storageId),
-					request = handler.available();
-				
-				request.onsuccess = (function (s, h) {
-					var tempStorage = s,
-						tempHandler = h;
-					
-					return function () {
-						var isAvailable = isAvailable = this.result === 'available';
-						tempStorage.setDeviceHandler(tempHandler, isAvailable, onloaded);
-					};
-				})(storage, handler);
-				
-				request.onerror = (function (s, h) {
-					var tempStorage = s,
-						tempHandler = h;
-					
-					return function () {
-						tempStorage.setDeviceHandler(tempHandler, false, onloaded);
-					};
-				})(storage, handler);
-			});
-		}
-		
-		function bindings() {
-			
-			// TODO
-		}
-		
-		function navigation() {
-			// TODO
-			var r = Storage.Pictures.handler.enumerate();
-			
-			r.onsuccess = function () {
-				if (this.result) {
-					console.log(this.result);
-					this.continue();
-				}
+	function setupMainPage() {
+		var hasPermissions = false;
+		_.each(Storage.getDeviceStorages(), function (storage) {
+			if (storage.isAvailable) {
+				$(storage.elId).show();
+				hasPermissions = true;
 			}
-			
-			r.onerror = function () {
-				console.log(this.error);
-			}
+		});
+		
+		if (hasPermissions) {
+			$('#storage').show();
+		} else {
+			$('#file-system-error').show();
 		}
+	}
+	
+	function bindings() {
 		
-		app.init = function () {
-			initStorage(navigation);
-		};
+	}
+	
+	function navigation() {
 		
-		app.init();
-	})(runningApp);
+	}
+	
+	function init() {
+		navigation();
+		bindings();
+		initStorage(setupMainPage);
+	};
+	
+	init();
 });

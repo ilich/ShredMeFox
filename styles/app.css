@@ -2,12 +2,12 @@ body {
 	font-family: 'Open Sans', sans-serif;
 }
 
-#storage {
+#storage, #storage li {
 	display: none;
 }
 
 #file-system-error {
 	display: none;
-	font-size: 2em;
+	font-size: 1.5em;
 	text-align: center;
 }

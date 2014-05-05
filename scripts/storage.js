@@ -42,10 +42,10 @@ var getStorage = (function () {
 	return function() {
 		var storages = {}
 		
-		storages.SDCard = new StorageInfo(storages, 'sdcard', 'sdcard-storage', '#sdcard');
-		storages.Pictures = new StorageInfo(storages, 'pictures', 'pictires-storage', '#pictures');
-		storages.Music = new StorageInfo(storages, 'music', 'music-storage', '#music');
-		storages.Videos = new StorageInfo(storages, 'videos', 'videos-storage', '#videos');
+		storages.SDCard = new StorageInfo(storages, 'sdcard', '#sdcard-storage', '#sdcard');
+		storages.Pictures = new StorageInfo(storages, 'pictures', '#pictires-storage', '#pictures');
+		storages.Music = new StorageInfo(storages, 'music', '#music-storage', '#music');
+		storages.Videos = new StorageInfo(storages, 'videos', '#videos-storage', '#videos');
 			
 		storages.isLoaded = function () {
 				return this.SDCard.handler !== null &&
@@ -53,6 +53,14 @@ var getStorage = (function () {
 						this.Music.handler !== null &&
 						this.Videos.handler !== null;
 			};
+			
+		storages.getDeviceStorages = function () {
+			var deviceStorages = _.filter(this, function (storage) {
+				return !_.isFunction(storage);
+			});
+			
+			return deviceStorages;
+		};
 		
 		return storages;
 	}
