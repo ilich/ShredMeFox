@@ -1,11 +1,12 @@
 var getStorage = (function () {
-	function StorageInfo(allStorages, storageId, elId, uri) {
+	function StorageInfo(allStorages, storageId, elId, uri, title) {
 		this._allStorages = allStorages;
 		this._storageId = storageId;
 		this._isAvailable = false;
 		this._handler = null;
 		this._elId = elId;
 		this._uri = uri;
+		this._title = title;
 	}
 	
 	Object.defineProperty(StorageInfo.prototype, 'storageId', {
@@ -28,6 +29,10 @@ var getStorage = (function () {
 		get: function () { return this._uri; }
 	});
 	
+	Object.defineProperty(StorageInfo.prototype, 'title', {
+		get: function () { return this._title; }
+	});
+	
 	StorageInfo.prototype.setDeviceHandler = function (handler, isAvailable, onloaded) {
 		this._handler = handler;
 		this._isAvailable = isAvailable;
@@ -42,10 +47,10 @@ var getStorage = (function () {
 	return function() {
 		var storages = {}
 		
-		storages.SDCard = new StorageInfo(storages, 'sdcard', '#sdcard-storage', '#sdcard');
-		storages.Pictures = new StorageInfo(storages, 'pictures', '#pictires-storage', '#pictures');
-		storages.Music = new StorageInfo(storages, 'music', '#music-storage', '#music');
-		storages.Videos = new StorageInfo(storages, 'videos', '#videos-storage', '#videos');
+		storages.SDCard = new StorageInfo(storages, 'sdcard', '#sdcard-storage', '#sdcard', 'SD Card');
+		storages.Pictures = new StorageInfo(storages, 'pictures', '#pictires-storage', '#pictures', 'My Pictures');
+		storages.Music = new StorageInfo(storages, 'music', '#music-storage', '#music', 'My Music');
+		storages.Videos = new StorageInfo(storages, 'videos', '#videos-storage', '#videos', 'My Videos');
 			
 		storages.isLoaded = function () {
 				return this.SDCard.handler !== null &&
@@ -60,6 +65,14 @@ var getStorage = (function () {
 			});
 			
 			return deviceStorages;
+		};
+		
+		storages.findStorageByUri = function (uri) {
+			var storage = _.find(this, function (storage) {
+				return !_.isFunction(storage) && storage.uri === uri;
+			});
+			
+			return storage;
 		};
 		
 		return storages;
