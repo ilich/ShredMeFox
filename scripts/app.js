@@ -1,5 +1,6 @@
 $(document).on('pageinit', '#storage-selector-page', function () {
 	var Storage = getStorage(),
+		ShreddingAlgorithms = getShreddingAlgorithms(),
 		$folderName = $('#folder-name'),
 		$files = $('#files');
 
@@ -76,6 +77,21 @@ $(document).on('pageinit', '#storage-selector-page', function () {
 			} else {
 				var strHtml = listHtml.join('');
 				$files.html(strHtml).listview('refresh');
+				
+				$('.file').on('click', function () {
+					var $link = $(this),
+						filename = $link.attr('href');
+						
+					if (!confirm('Are you sure you want to remove permanently this file?')) {
+						return;
+					}
+					
+					var deleteFile = ShreddingAlgorithms['Quick delete'];
+					deleteFile(storage.handler, filename, function () {
+						$link.parent().remove();
+						$files.listview('refresh');
+					});
+				});
 			}
 		};
 	}

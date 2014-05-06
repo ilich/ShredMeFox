@@ -10,7 +10,6 @@
 		"name": "Ilya Verbitskiy",
 		"url": "https://github.com/ilich/"
 	},
-	"scp": "eval-script",
 	"permissions": {
 		"device-storage:sdcard": {
 			"access": "readwrite"
