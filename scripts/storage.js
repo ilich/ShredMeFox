@@ -1,41 +1,44 @@
 var getStorage = (function () {
-	function StorageInfo(allStorages, storageId, elId, uri, title) {
+	function StorageInfo(allStorages, parameters) {
+		this._parameters = $.extend({
+			isAvailable: false, 
+			handler: null
+		}, parameters);
+		
 		this._allStorages = allStorages;
-		this._storageId = storageId;
-		this._isAvailable = false;
-		this._handler = null;
-		this._elId = elId;
-		this._uri = uri;
-		this._title = title;
 	}
 	
 	Object.defineProperty(StorageInfo.prototype, 'storageId', {
-		get: function () { return this._storageId; }
+		get: function () { return this._parameters.storageId; }
 	});
 	
 	Object.defineProperty(StorageInfo.prototype, 'isAvailable', {
-		get: function () { return this._isAvailable; }
+		get: function () { return this._parameters.isAvailable; }
 	});
 	
 	Object.defineProperty(StorageInfo.prototype, 'handler', {
-		get: function () { return this._handler; }
+		get: function () { return this._parameters.handler; }
 	});
 	
 	Object.defineProperty(StorageInfo.prototype, 'elId', {
-		get: function () { return this._elId; }
+		get: function () { return this._parameters.elId; }
 	});
 	
 	Object.defineProperty(StorageInfo.prototype, 'uri', {
-		get: function () { return this._uri; }
+		get: function () { return this._parameters.uri; }
 	});
 	
 	Object.defineProperty(StorageInfo.prototype, 'title', {
-		get: function () { return this._title; }
+		get: function () { return this._parameters.title; }
+	});
+	
+	Object.defineProperty(StorageInfo.prototype, 'contentType', {
+		get: function () { return this._parameters.contentType; }
 	});
 	
 	StorageInfo.prototype.setDeviceHandler = function (handler, isAvailable, onloaded) {
-		this._handler = handler;
-		this._isAvailable = isAvailable;
+		this._parameters.handler = handler;
+		this._parameters.isAvailable = isAvailable;
 		
 		if (this._allStorages.isLoaded()) {
 			onloaded();
@@ -47,10 +50,37 @@ var getStorage = (function () {
 	return function() {
 		var storages = {}
 		
-		storages.SDCard = new StorageInfo(storages, 'sdcard', '#sdcard-storage', '#sdcard', 'SD Card');
-		storages.Pictures = new StorageInfo(storages, 'pictures', '#pictires-storage', '#pictures', 'My Pictures');
-		storages.Music = new StorageInfo(storages, 'music', '#music-storage', '#music', 'My Music');
-		storages.Videos = new StorageInfo(storages, 'videos', '#videos-storage', '#videos', 'My Videos');
+		storages.SDCard = new StorageInfo(storages, {
+			storageId: 'sdcard', 
+			elId: '#sdcard-storage', 
+			uri: '#sdcard', 
+			title: 'SD Card',
+			contentType: 'application/octet-stream'
+		});
+		
+		storages.Pictures = new StorageInfo(storages, {
+			storageId: 'pictures', 
+			elId: '#pictires-storage', 
+			uri: '#pictures', 
+			title: 'My Pictures',
+			contentType: 'image/jpeg'
+		});
+		
+		storages.Music = new StorageInfo(storages, {
+			storageId: 'music', 
+			elId: '#music-storage', 
+			uri: '#music', 
+			title: 'My Music',
+			contentType: 'audio/mpeg'
+		});
+		
+		storages.Videos = new StorageInfo(storages, {
+			storageId: 'videos', 
+			elId: '#videos-storage', 
+			uri: '#videos', 
+			title: 'My Videos',
+			contentType: 'video/mpeg'
+		});
 			
 		storages.isLoaded = function () {
 				return this.SDCard.handler !== null &&
