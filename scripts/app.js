@@ -56,7 +56,7 @@ $(document).on('pageinit', '#storage-selector-page', function () {
 	}
 	
 	function setupStoragePage(storageUri) {
-		var fileTemplate = '<li data-icon="delete"><a href="#{{NAME}}" class="file">{{NAME}}</a></li>',
+		var fileTemplate = '<li data-icon="delete"><a href="{{NAME}}" class="file">{{NAME}}</a></li>',
 			storage = Storage.findStorageByUri(storageUri);
 			
 		if (!storage) {
@@ -78,16 +78,18 @@ $(document).on('pageinit', '#storage-selector-page', function () {
 				var strHtml = listHtml.join('');
 				$files.html(strHtml).listview('refresh');
 				
-				$('.file').on('click', function () {
+				$('.file').on('click', function (e) {
+					e.preventDefault();
+					
 					var $link = $(this),
 						filename = $link.attr('href');
 						
 					if (!confirm('Are you sure you want to remove permanently this file?')) {
 						return;
 					}
-					
-					var deleteFile = ShreddingAlgorithms['Quick delete'];
-					deleteFile(storage.handler, filename, function () {
+
+					var deleteFile = ShreddingAlgorithms['Quick delete (2 passes)'];
+					deleteFile(storage.handler, filename, storage.contentType, function () {
 						$link.parent().remove();
 						$files.listview('refresh');
 					});
